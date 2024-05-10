@@ -15,7 +15,8 @@ limite = 500
 extrato = ""
 numero_saques = 0
 LIMITE_SAQUES = 3
-
+depositos = []
+saques = []
 
 while True: 
 
@@ -25,6 +26,7 @@ while True:
         deposito = int(input("Informe o Valor do Deposito: "))
         if deposito > 0:
             saldo += deposito
+            depositos.append(deposito)
             print(f"Depósito de R${deposito:.2f} realizado com sucesso!")
         else:
             print("O valor do deposito deve ser maior que zero. Tente Novamente!")
@@ -40,6 +42,7 @@ while True:
                         print("O limite de saque é de R$500,00.")
                     else:
                         saldo -= saque
+                        saques.append(saque)
                         numero_saques += 1
                         print(f"Saque de R${saque:.2f} realizado com sucesso!")
                 else:
@@ -51,7 +54,14 @@ while True:
 
 
     elif opcao == "e":
-        print("Extrato")
+        print(" ----- Extrato: ------ ")
+        for valorDeposito in depositos:
+            print(f"Deposito: R${valorDeposito:.2f}")
+        
+        for valorSaque in saques:
+            print(f"Saque: R${valorSaque:.2f}")
+        
+        print(f"Saldo Atual: R${saldo: .2f}")
     
 
     elif opcao == "q":
@@ -61,5 +71,5 @@ while True:
         print("Operação inválida, por favor selecione novamente a operação desejada.")
 
 
-print(saldo)
+
 
