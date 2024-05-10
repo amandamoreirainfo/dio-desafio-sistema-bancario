@@ -31,8 +31,25 @@ while True:
      
     
     elif opcao == "s":
-        print("Sacar")
-    
+
+        if numero_saques < LIMITE_SAQUES:
+            saque = int(input("Informe o Valor do Saque: "))
+            if saque > 0:
+                if saque <= saldo:
+                    if limite <= saque:
+                        print("O limite de saque é de R$500,00.")
+                    else:
+                        saldo -= saque
+                        numero_saques += 1
+                        print(f"Saque de R${saque:.2f} realizado com sucesso!")
+                else:
+                    print("Saldo insuficiente para realizar o saque.")
+            else:
+                print("O valor do saque deve ser maior que zero. Tente Novamente!")
+        else:
+            print("Você atingiu o limite máximo de saques.")
+
+
     elif opcao == "e":
         print("Extrato")
     
