@@ -38,15 +38,67 @@ def exibir_extrato(saldo, /, *, extrato):
     for transacao in extrato:
         print(transacao)
         print(f"Saldo Atual: R${saldo:.2f}")
+
+
+usuarios = []
+contas = []
+numero_conta = 1
+AGENCIA = "0001"
+
+def criar_usuario(nome, data_nascimento, cpf, endereco):
+    cpf = ''.join(filter(str.isdigit, cpf))
+    
+    for usuario in usuarios:
+        if usuario['cpf'] == cpf:
+            print("CPF já cadastrado.")
+            return
+
+    usuario = {
+        "nome" : nome,
+        "data_nascimento": data_nascimento,
+        "cpf": cpf,
+        "endereco": endereco
+    }
+    usuarios.append(usuario)
+    print("Usuário cadastrado com sucesso!")
+
+
+def criar_conta(cpf):
+    global numero_conta
+
+    for usuario in usuarios:
+        if usuario['cpf'] == cpf:
+            conta = {
+                "agencia": AGENCIA,
+                "numero_conta": numero_conta,
+                "usuario": usuario,
+                "saldo": 0,
+                "extrato": [],
+                "limite": 500,
+                "numero_saques": 3
+            }
+            contas.append(conta)
+            numero_conta += 1
+            print("Conta corrente criada com sucesso!")
+            return
+    
+    print("Usuário não encontrado. Verifique o CPF e tente novamente.")
+
+
+def listar_contas():
+    for conta in contas:
+        print(f"Agência: {conta['agencia']}, Número da Conta: {conta['numero_conta']}, Usuário: {conta['usuario']['nome']}")
         
-     
 
 menu = """
 
 -------  Menu: -----------
+[u] Cadastrar Usuário
+[c] Criar Conta Corrente
 [d] Depositar
 [s] Sacar
 [e] Extrato
+[l] Listar Contas
 [q] Sair
 
 """
@@ -63,7 +115,18 @@ while True:
 
     opcao = input(menu)
 
-    if opcao == "d":
+    if opcao == "u":
+        nome = input("Nome: ")
+        data_nascimento = input("Data de Nascimento: ")
+        cpf = input("CPF: ")
+        endereco = input("Endereço: ")
+        criar_usuario(nome, data_nascimento, cpf, endereco)
+    
+    elif opcao == "c":
+        cpf = input("Informe o CPF do usuário: ")
+        criar_conta(cpf)
+
+    elif opcao == "d":
         valor = float(input("Informe o Valor do Deposito: "))
         saldo, extrato = depositar(saldo, valor, extrato)
     
@@ -80,7 +143,9 @@ while True:
     elif opcao == "e":
         exibir_extrato(saldo, extrato=extrato)
     
-
+    elif opcao == "l":
+        listar_contas()
+    
     elif opcao == "q":
         break
 
